@@ -133,22 +133,9 @@ class RetryUnless
         $this->attempts++;
         try {
             $callback = $this->callback;
-            $result = $callback();
-            if ($result instanceof PromiseInterface) {
-                $later = function ($result) {
-                    $this->handleResult($result);
-                };
-                $result->then($later, $later);
-            } else {
-                $this->handleResult($result);
-            }
+            $this->handleResult($callback());
         } catch (Exception $e) {
             $this->handleResult($e);
-            if ($this->expectsSuccess) {
-                $this->scheduleNextAttempt();
-            } else {
-                $this->succeed($e);
-            }
         }
     }
 
@@ -166,6 +153,11 @@ class RetryUnless
             if ($result instanceof Exception) {
                 $this->logError($result);
                 $this->scheduleNextAttempt();
+            } elseif ($result instanceof PromiseInterface) {
+                $later = function ($result) {
+                    $this->handleResult($result);
+                };
+                $result->then($later, $later);
             } else {
                 $this->succeed($result);
             }
