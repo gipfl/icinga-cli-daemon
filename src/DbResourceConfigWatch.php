@@ -23,8 +23,8 @@ class DbResourceConfigWatch
     /** @var string|null */
     protected $dbResourceName;
 
-    /** @var array|null */
-    protected $resourceConfig;
+    /** @var array|null|false It's false on initialization to trigger  */
+    protected $resourceConfig = false;
 
     /** @var int|float */
     protected $interval = 3;
