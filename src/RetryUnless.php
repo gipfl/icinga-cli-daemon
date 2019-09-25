@@ -65,7 +65,9 @@ class RetryUnless
         $this->assertNotRunning();
         $this->deferred = $deferred = new Deferred();
         $this->loop = $loop;
-        $this->nextAttempt();
+        $loop->futureTick(function () {
+            $this->nextAttempt();
+        });
 
         return $deferred->promise();
     }
