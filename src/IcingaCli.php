@@ -2,6 +2,7 @@
 
 namespace gipfl\IcingaCliDaemon;
 
+use Exception;
 use Evenement\EventEmitterTrait;
 use gipfl\Protocol\JsonRpc\Connection;
 use React\EventLoop\LoopInterface;
@@ -77,7 +78,7 @@ class IcingaCli
             if ($state->succeeded()) {
                 $deferred->resolve();
             } else {
-                $deferred->reject($state);
+                $deferred->reject(new Exception($state->getReason()));
             }
         });
 
