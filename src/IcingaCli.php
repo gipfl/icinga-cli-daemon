@@ -39,7 +39,7 @@ class IcingaCli
     /** @var Deferred|null */
     protected $deferredStderr;
 
-    public function __construct(IcingaCliRunner $runner = null)
+    public function __construct(?IcingaCliRunner $runner = null)
     {
         if ($runner === null) {
             $runner = new IcingaCliRunner();
